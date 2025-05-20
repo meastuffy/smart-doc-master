@@ -1,7 +1,7 @@
 
 import React, { ReactNode, useState } from "react";
 import Layout from "@/components/layout/Layout";
-import { FileUploader } from "@/components/FileUploader";
+import FileUploader from "@/components/FileUploader";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
