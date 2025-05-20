@@ -73,10 +73,10 @@ const ToolLayout: React.FC<ToolLayoutProps> = ({
 
           <div className="bg-card border rounded-lg shadow-sm p-6 mb-6">
             <FileUploader
-              acceptedFileTypes={acceptedFileTypes}
-              maxFiles={maxFiles}
-              maxSize={100 * 1024 * 1024} // 100MB
-              onFilesChange={handleFileChange}
+              accept={acceptedFileTypes.join(',')}
+              multiple={maxFiles > 1}
+              maxSize={100}
+              onFilesSelected={handleFileChange}
             />
             
             {files.length > 0 && (
