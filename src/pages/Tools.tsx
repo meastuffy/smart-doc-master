@@ -24,84 +24,84 @@ const Tools = () => {
             title="Merge PDF"
             description="Combine multiple PDFs into one document"
             icon={<File className="h-6 w-6" />}
-            path="/tools/merge"
+            to="/tools/merge"
           />
           
           <ToolCard
             title="Split PDF"
             description="Extract pages or split PDF into multiple files"
             icon={<Scissors className="h-6 w-6" />}
-            path="/tools/split"
+            to="/tools/split"
           />
           
           <ToolCard
             title="Compress PDF"
             description="Reduce PDF file size without losing quality"
             icon={<ArrowDown className="h-6 w-6" />}
-            path="/tools/compress"
+            to="/tools/compress"
           />
           
           <ToolCard
             title="Convert PDF"
             description="Convert PDFs to Word, Excel, PowerPoint & more"
             icon={<FileText className="h-6 w-6" />}
-            path="/tools/convert"
+            to="/tools/convert"
           />
           
           <ToolCard
             title="Rotate PDF"
             description="Rotate PDF pages as needed"
             icon={<RotateCw className="h-6 w-6" />}
-            path="/tools/rotate"
+            to="/tools/rotate"
           />
           
           <ToolCard
             title="Watermark"
             description="Add a watermark text or image to your PDF"
             icon={<Image className="h-6 w-6" />}
-            path="/tools/watermark"
+            to="/tools/watermark"
           />
           
           <ToolCard
             title="Protect PDF"
             description="Password protect your PDF files"
             icon={<Lock className="h-6 w-6" />}
-            path="/tools/protect"
+            to="/tools/protect"
           />
           
           <ToolCard
             title="Unlock PDF"
             description="Remove password protection from PDFs"
             icon={<Unlock className="h-6 w-6" />}
-            path="/tools/unlock"
+            to="/tools/unlock"
           />
           
           <ToolCard
             title="Edit PDF"
             description="Add text, images, shapes or annotations"
             icon={<FileText className="h-6 w-6" />}
-            path="/tools/edit-pdf"
+            to="/tools/edit-pdf"
           />
           
           <ToolCard
             title="PDF to Word"
             description="Convert PDF to editable Word documents"
             icon={<FileText className="h-6 w-6" />}
-            path="/tools/pdf-to-word"
+            to="/tools/pdf-to-word"
           />
           
           <ToolCard
             title="PDF to Excel"
             description="Convert PDF to editable Excel spreadsheets"
             icon={<FileText className="h-6 w-6" />}
-            path="/tools/pdf-to-excel"
+            to="/tools/pdf-to-excel"
           />
           
           <ToolCard
             title="PDF to PowerPoint"
             description="Convert PDF to PowerPoint presentations"
             icon={<FileText className="h-6 w-6" />}
-            path="/tools/pdf-to-powerpoint"
+            to="/tools/pdf-to-powerpoint"
           />
         </div>
       </div>
