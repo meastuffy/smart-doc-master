@@ -14,10 +14,10 @@ const Index = () => {
             <div className="w-full lg:w-1/2 px-4 mb-12 lg:mb-0">
               <div className="max-w-lg">
                 <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold mb-5 animate-fade-in">
-                  Your Complete PDF Toolkit
+                  All-in-One Online PDF Tool
                 </h1>
                 <p className="text-xl text-muted-foreground mb-10 animate-slide-in">
-                  Edit, convert, and manage your PDF files with ease. All processing happens right in your browser for enhanced privacy and security.
+                  Edit, Convert, and Manage Your Documents. Whether you're a student, professional, or business owner, Smart Doc Master helps you handle your documents effortlessly—just like magic.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <Button size="lg" asChild>
