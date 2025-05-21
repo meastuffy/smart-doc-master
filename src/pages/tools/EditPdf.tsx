@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { Edit, ImagePlus, Type, Shapes } from "lucide-react";
+import { simulateDownload } from "@/utils/downloadUtils";
 
 const EditPdf = () => {
   const [result, setResult] = useState<string | null>(null);
@@ -14,6 +15,17 @@ const EditPdf = () => {
       toast({
         title: "Error",
         description: "Please select a PDF file to edit.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Ensure the file is a PDF
+    const file = files[0];
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+      toast({
+        title: "Error",
+        description: `${file.name} is not a supported file type. Please upload a PDF file.`,
         variant: "destructive",
       });
       return;
@@ -38,11 +50,21 @@ const EditPdf = () => {
     });
   };
 
+  const handleDownload = () => {
+    if (result) {
+      simulateDownload(result);
+      toast({
+        title: "Downloaded",
+        description: "Your edited PDF has been downloaded.",
+      });
+    }
+  };
+
   return (
     <ToolLayout
       title="Edit PDF"
       description="Add text, images, shapes or freehand annotations to a PDF document. Edit the size, font, and color of the added content."
-      acceptedFileTypes={["application/pdf"]}
+      acceptedFileTypes={["application/pdf", ".pdf"]}
       maxFiles={1}
       buttonText="Edit PDF"
       processingText="Loading PDF editor..."
@@ -89,7 +111,10 @@ const EditPdf = () => {
           <h3 className="text-lg font-medium mb-4">PDF Edited</h3>
           <div className="p-4 bg-muted/50 rounded-md">
             <p className="mb-2">Your PDF has been edited successfully.</p>
-            <button className="text-primary font-medium hover:underline">
+            <button 
+              onClick={handleDownload}
+              className="text-primary font-medium hover:underline"
+            >
               Download Edited PDF
             </button>
           </div>

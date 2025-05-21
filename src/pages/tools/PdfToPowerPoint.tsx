@@ -3,11 +3,10 @@ import React, { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { simulateDownload } from "@/utils/downloadUtils";
+import { validatePdfFile } from "@/utils/pdfUtils";
 
 const PdfToPowerPoint = () => {
   const [result, setResult] = useState<string | null>(null);
-  const [conversionProgress, setConversionProgress] = useState(0);
-  const [isConverting, setIsConverting] = useState(false);
   const { toast } = useToast();
 
   const handleConvert = async (files: File[]) => {
@@ -20,33 +19,19 @@ const PdfToPowerPoint = () => {
       return;
     }
 
-    // Simulate conversion with progress
-    setIsConverting(true);
-    setConversionProgress(0);
-    
+    // Validate PDF file
+    if (!validatePdfFile(files[0], toast)) return;
+
+    // Simulate conversion
     toast({
       title: "Processing",
       description: "Converting your PDF to PowerPoint...",
     });
 
-    const interval = setInterval(() => {
-      setConversionProgress(prev => {
-        if (prev >= 95) {
-          clearInterval(interval);
-          return 95;
-        }
-        return prev + 5;
-      });
-    }, 100);
+    await new Promise(resolve => setTimeout(resolve, 1500));
     
-    await new Promise(resolve => setTimeout(resolve, 2500));
-    
-    clearInterval(interval);
-    setConversionProgress(100);
-    setIsConverting(false);
-    
-    const fileName = files[0].name.split('.')[0] + ".pptx";
-    setResult(fileName);
+    const fileName = files[0].name.split('.')[0];
+    setResult(`${fileName}.pptx`);
     
     toast({
       title: "Success!",
@@ -57,10 +42,9 @@ const PdfToPowerPoint = () => {
   const handleDownload = () => {
     if (result) {
       simulateDownload(result);
-      
       toast({
-        title: "Downloading",
-        description: `Your file ${result} is being downloaded.`,
+        title: "Downloaded",
+        description: "Your PowerPoint presentation has been downloaded.",
       });
     }
   };
@@ -68,35 +52,21 @@ const PdfToPowerPoint = () => {
   return (
     <ToolLayout
       title="PDF to PowerPoint"
-      description="Convert PDF documents to PowerPoint presentations"
-      acceptedFileTypes={["application/pdf"]}
+      description="Convert PDF documents to editable PowerPoint presentations"
+      acceptedFileTypes={["application/pdf", ".pdf"]}
       maxFiles={1}
       buttonText="Convert to PowerPoint"
       processingText="Converting..."
       onProcess={handleConvert}
     >
-      {isConverting && (
-        <div className="bg-card border rounded-lg shadow-sm p-6 mb-6">
-          <h3 className="text-lg font-medium mb-4">Conversion in Progress</h3>
-          <div className="w-full bg-muted rounded-full h-2.5 mb-2">
-            <div 
-              className="bg-primary h-2.5 rounded-full transition-all duration-300" 
-              style={{width: `${conversionProgress}%`}}
-            ></div>
-          </div>
-          <p className="text-sm text-muted-foreground">Extracting slides and graphics from PDF...</p>
-        </div>
-      )}
-
       {result && (
         <div className="bg-card border rounded-lg shadow-sm p-6">
           <h3 className="text-lg font-medium mb-4">Conversion Complete</h3>
           <div className="p-4 bg-muted/50 rounded-md">
             <p className="mb-2">Your PDF has been converted to PowerPoint successfully.</p>
-            <p className="text-sm text-muted-foreground mb-4">Each PDF page has been converted to a slide with preserved formatting.</p>
             <button 
-              className="text-primary font-medium hover:underline"
               onClick={handleDownload}
+              className="text-primary font-medium hover:underline"
             >
               Download PowerPoint Presentation
             </button>

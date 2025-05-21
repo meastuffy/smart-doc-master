@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { simulateDownload } from "@/utils/downloadUtils";
 
 const PdfToExcel = () => {
   const [result, setResult] = useState<string | null>(null);
@@ -14,6 +15,17 @@ const PdfToExcel = () => {
       toast({
         title: "Error",
         description: "Please select a PDF file to convert.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Ensure the file is a PDF
+    const file = files[0];
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+      toast({
+        title: "Error",
+        description: `${file.name} is not a supported file type. Please upload a PDF file.`,
         variant: "destructive",
       });
       return;
@@ -53,11 +65,21 @@ const PdfToExcel = () => {
     });
   };
 
+  const handleDownload = () => {
+    if (result) {
+      simulateDownload(result);
+      toast({
+        title: "Downloaded",
+        description: "Your Excel file has been downloaded.",
+      });
+    }
+  };
+
   return (
     <ToolLayout
       title="PDF to Excel"
       description="Convert PDF documents to editable Excel spreadsheets"
-      acceptedFileTypes={["application/pdf"]}
+      acceptedFileTypes={["application/pdf", ".pdf"]}
       maxFiles={1}
       buttonText="Convert to Excel"
       processingText="Converting..."
@@ -82,7 +104,10 @@ const PdfToExcel = () => {
           <div className="p-4 bg-muted/50 rounded-md">
             <p className="mb-2">Your PDF has been converted to Excel successfully.</p>
             <p className="text-sm text-muted-foreground mb-4">Tables and data have been preserved in the Excel format.</p>
-            <button className="text-primary font-medium hover:underline">
+            <button 
+              onClick={handleDownload}
+              className="text-primary font-medium hover:underline"
+            >
               Download Excel File
             </button>
           </div>

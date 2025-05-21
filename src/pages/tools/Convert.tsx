@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { simulateDownload } from "@/utils/downloadUtils";
 
 const Convert = () => {
   const [result, setResult] = useState<string | null>(null);
@@ -14,6 +15,17 @@ const Convert = () => {
       toast({
         title: "Error",
         description: "Please select a file to convert.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Ensure the file is a PDF
+    const file = files[0];
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+      toast({
+        title: "Error",
+        description: `${file.name} is not a supported file type. Please upload a PDF file.`,
         variant: "destructive",
       });
       return;
@@ -48,11 +60,21 @@ const Convert = () => {
     }
   };
 
+  const handleDownload = () => {
+    if (result) {
+      simulateDownload(result);
+      toast({
+        title: "Downloaded",
+        description: `Your converted file has been downloaded.`,
+      });
+    }
+  };
+
   return (
     <ToolLayout
       title="Convert Files"
       description="Convert between various document formats"
-      acceptedFileTypes={["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "image/jpeg", "image/png"]}
+      acceptedFileTypes={["application/pdf", ".pdf"]}
       maxFiles={1}
       buttonText="Convert File"
       processingText="Converting..."
@@ -83,7 +105,10 @@ const Convert = () => {
           <h3 className="text-lg font-medium mb-4">Conversion Complete</h3>
           <div className="p-4 bg-muted/50 rounded-md">
             <p className="mb-2">Your file has been converted successfully to {getFormatName(convertTo)}.</p>
-            <button className="text-primary font-medium hover:underline">
+            <button 
+              onClick={handleDownload}
+              className="text-primary font-medium hover:underline"
+            >
               Download Converted File
             </button>
           </div>
