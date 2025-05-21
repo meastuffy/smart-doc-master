@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
+import { downloadFile, simulateDownload } from "@/utils/downloadUtils";
 
 const Compress = () => {
   const [result, setResult] = useState<string | null>(null);
@@ -12,6 +13,17 @@ const Compress = () => {
       toast({
         title: "Error",
         description: "Please select a PDF file to compress.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Ensure the file is a PDF
+    const file = files[0];
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+      toast({
+        title: "Error",
+        description: `${file.name} is not a supported file type. Please upload a PDF file.`,
         variant: "destructive",
       });
       return;
@@ -37,11 +49,21 @@ const Compress = () => {
     });
   };
 
+  const handleDownload = () => {
+    if (result) {
+      simulateDownload(result);
+      toast({
+        title: "Downloaded",
+        description: "Your compressed PDF has been downloaded.",
+      });
+    }
+  };
+
   return (
     <ToolLayout
       title="Compress PDF"
       description="Reduce PDF file size while maintaining quality"
-      acceptedFileTypes={["application/pdf"]}
+      acceptedFileTypes={["application/pdf", ".pdf"]}
       maxFiles={1}
       buttonText="Compress PDF"
       processingText="Compressing..."
@@ -52,7 +74,10 @@ const Compress = () => {
           <h3 className="text-lg font-medium mb-4">Compression Complete</h3>
           <div className="p-4 bg-muted/50 rounded-md">
             <p className="mb-2">Your file has been compressed successfully.</p>
-            <button className="text-primary font-medium hover:underline">
+            <button 
+              onClick={handleDownload}
+              className="text-primary font-medium hover:underline"
+            >
               Download Compressed PDF
             </button>
           </div>

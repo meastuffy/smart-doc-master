@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -64,13 +63,9 @@ const FileUploader: React.FC<FileUploaderProps> = ({
 
     // Validate file types and sizes
     for (const file of fileArray) {
-      // Check if the file type is accepted
-      const fileType = file.name.split('.').pop()?.toLowerCase() || '';
-      const acceptTypes = accept.split(',').map(type => 
-        type.trim().replace('.', '').toLowerCase()
-      );
-      
-      const isValidType = accept === '*' || acceptTypes.includes(fileType);
+      // Check if the file type is PDF
+      const isValidType = file.type === 'application/pdf' || 
+                          file.name.toLowerCase().endsWith('.pdf');
       const isValidSize = file.size <= maxSize * 1024 * 1024; // Convert MB to bytes
       
       if (!isValidType) {

@@ -60,6 +60,9 @@ const ToolLayout: React.FC<ToolLayoutProps> = ({
     }
   };
 
+  // Convert acceptedFileTypes array to a comma-separated string for the FileUploader
+  const acceptString = acceptedFileTypes.join(',');
+
   return (
     <Layout>
       <div className="container py-10">
@@ -73,7 +76,7 @@ const ToolLayout: React.FC<ToolLayoutProps> = ({
 
           <div className="bg-card border rounded-lg shadow-sm p-6 mb-6">
             <FileUploader
-              accept={acceptedFileTypes.join(',')}
+              accept={acceptString}
               multiple={maxFiles > 1}
               maxSize={100}
               onFilesSelected={handleFileChange}
