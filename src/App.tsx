@@ -36,6 +36,11 @@ import OcrPdf from "./pages/tools/OcrPdf";
 import ComparePdf from "./pages/tools/ComparePdf";
 import RedactPdf from "./pages/tools/RedactPdf";
 import CropPdf from "./pages/tools/CropPdf";
+import About from "./pages/About";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import Help from "./pages/Help";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +57,7 @@ const App = () => (
           <Route path="/tools/merge" element={<Merge />} />
           <Route path="/tools/split" element={<Split />} />
           <Route path="/tools/compress" element={<Compress />} />
+          <Route path="/tools/convert" element={<Convert />} />
           <Route path="/tools/rotate" element={<Rotate />} />
           <Route path="/tools/watermark" element={<Watermark />} />
           <Route path="/tools/protect" element={<Protect />} />
@@ -76,6 +82,11 @@ const App = () => (
           <Route path="/tools/compare-pdf" element={<ComparePdf />} />
           <Route path="/tools/redact-pdf" element={<RedactPdf />} />
           <Route path="/tools/crop-pdf" element={<CropPdf />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

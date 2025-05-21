@@ -3,6 +3,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
 
 const Header: React.FC = () => {
   return (
@@ -29,26 +38,65 @@ const Header: React.FC = () => {
           </Link>
         </div>
         <div className="flex items-center gap-4">
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <Link
-              to="/tools"
-              className="transition-colors hover:text-primary"
-            >
-              Tools
-            </Link>
-            <Link
-              to="/recent"
-              className="transition-colors hover:text-primary"
-            >
-              Recent Files
-            </Link>
-            <Link
-              to="/about"
-              className="transition-colors hover:text-primary"
-            >
-              About
-            </Link>
-          </nav>
+          <NavigationMenu className="hidden md:flex">
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                    <li className="row-span-3">
+                      <NavigationMenuLink asChild>
+                        <Link
+                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                          to="/tools"
+                        >
+                          <div className="mb-2 mt-4 text-lg font-medium">
+                            PDF Tools
+                          </div>
+                          <p className="text-sm leading-tight text-muted-foreground">
+                            Comprehensive set of tools to edit, convert and manage your PDF documents
+                          </p>
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <ListItem to="/tools/merge" title="Merge PDFs">
+                      Combine multiple PDF files into one document
+                    </ListItem>
+                    <ListItem to="/tools/split" title="Split PDF">
+                      Extract pages from your PDF
+                    </ListItem>
+                    <ListItem to="/tools/compress" title="Compress PDF">
+                      Reduce file size while maintaining quality
+                    </ListItem>
+                    <ListItem to="/tools/convert" title="Convert Files">
+                      Convert between PDF and other formats
+                    </ListItem>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link to="/recent" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                  Recent Files
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid gap-3 p-6 w-[200px]">
+                    <ListItem to="/about" title="About">
+                      Learn about Smart Doc Master
+                    </ListItem>
+                    <ListItem to="/help" title="Help Center">
+                      Find answers to common questions
+                    </ListItem>
+                    <ListItem to="/contact" title="Contact Us">
+                      Get in touch with our team
+                    </ListItem>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
           <div className="flex items-center gap-4">
             <ThemeToggle />
             <Button asChild>
@@ -60,5 +108,32 @@ const Header: React.FC = () => {
     </header>
   );
 };
+
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a"> & { to: string; title: string }
+>(({ className, title, children, to, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <Link
+          ref={ref as any}
+          to={to}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </Link>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";
 
 export default Header;
