@@ -25,7 +25,7 @@ const Header: React.FC = () => {
                 <polyline points="14 2 14 8 20 8" />
               </svg>
             </div>
-            <span className="font-bold text-xl">PDFWizard</span>
+            <span className="font-bold text-xl">Smart Doc Master</span>
           </Link>
         </div>
         <div className="flex items-center gap-4">
