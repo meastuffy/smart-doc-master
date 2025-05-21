@@ -26,11 +26,10 @@ const Footer: React.FC = () => {
                   <polyline points="14 2 14 8 20 8" />
                 </svg>
               </div>
-              <span className="font-bold text-xl">PDFWizard</span>
+              <span className="font-bold text-xl">Smart Doc Master</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              PDFWizard provides powerful PDF manipulation tools to help you work more efficiently with documents.
-              All processing happens in your browser for enhanced security and privacy.
+              All-in-One Online Tool to Edit, Convert, and Manage Your Documents. Whether you're a student, professional, or business owner, Smart Doc Master helps you handle your documents effortlessly—just like magic..
             </p>
           </div>
           <div>
@@ -56,7 +55,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
         <div className="mt-8 pt-6 border-t text-sm text-muted-foreground flex flex-col sm:flex-row justify-between items-center">
-          <p>&copy; {currentYear} PDFWizard. All rights reserved.</p>
+          <p>&copy; {currentYear} Smart Doc Master. All rights reserved.</p>
           <div className="mt-2 sm:mt-0">
             <span>Made with ❤️ for productivity</span>
           </div>
