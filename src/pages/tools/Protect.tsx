@@ -30,7 +30,7 @@ const Protect = () => {
 
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    setResult("protected-file.pdf");
+    setResult("protected-" + files[0].name);
     
     toast({
       title: "Success!",
@@ -40,7 +40,7 @@ const Protect = () => {
 
   const handleDownload = () => {
     if (result) {
-      simulateDownload(result);
+      simulateDownload(result, 'protect');
       toast({
         title: "Downloaded",
         description: "Your protected PDF has been downloaded.",

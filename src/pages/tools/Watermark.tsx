@@ -30,7 +30,7 @@ const Watermark = () => {
 
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    setResult("watermarked-file.pdf");
+    setResult("watermarked-" + files[0].name);
     
     toast({
       title: "Success!",
@@ -40,7 +40,7 @@ const Watermark = () => {
 
   const handleDownload = () => {
     if (result) {
-      simulateDownload(result);
+      simulateDownload(result, 'watermark');
       toast({
         title: "Downloaded",
         description: "Your watermarked PDF has been downloaded.",

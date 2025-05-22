@@ -41,7 +41,7 @@ const PdfToWord = () => {
 
   const handleDownload = () => {
     if (result) {
-      simulateDownload(result);
+      simulateDownload(result, 'toword');
       toast({
         title: "Downloaded",
         description: "Your Word document has been downloaded.",

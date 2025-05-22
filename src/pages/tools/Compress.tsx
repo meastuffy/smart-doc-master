@@ -1,8 +1,8 @@
-
 import React, { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
-import { downloadFile, simulateDownload } from "@/utils/downloadUtils";
+import { simulateDownload } from "@/utils/downloadUtils";
+import { validatePdfFile } from "@/utils/pdfUtils";
 
 const Compress = () => {
   const [result, setResult] = useState<string | null>(null);
@@ -18,16 +18,8 @@ const Compress = () => {
       return;
     }
 
-    // Ensure the file is a PDF
-    const file = files[0];
-    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-      toast({
-        title: "Error",
-        description: `${file.name} is not a supported file type. Please upload a PDF file.`,
-        variant: "destructive",
-      });
-      return;
-    }
+    // Validate PDF file
+    if (!validatePdfFile(files[0], toast)) return;
 
     // Simulate compression
     toast({
@@ -41,7 +33,7 @@ const Compress = () => {
     const originalSize = files[0].size / 1024; // KB
     const compressedSize = originalSize * 0.7; // Simulate 30% compression
     
-    setResult("compressed-file.pdf");
+    setResult("compressed-" + files[0].name);
     
     toast({
       title: "Success!",
@@ -51,7 +43,7 @@ const Compress = () => {
 
   const handleDownload = () => {
     if (result) {
-      simulateDownload(result);
+      simulateDownload(result, 'compress');
       toast({
         title: "Downloaded",
         description: "Your compressed PDF has been downloaded.",

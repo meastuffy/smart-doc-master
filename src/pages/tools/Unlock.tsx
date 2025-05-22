@@ -30,7 +30,7 @@ const Unlock = () => {
 
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    setResult("unlocked-file.pdf");
+    setResult("unlocked-" + files[0].name);
     
     toast({
       title: "Success!",
@@ -40,7 +40,7 @@ const Unlock = () => {
 
   const handleDownload = () => {
     if (result) {
-      simulateDownload(result);
+      simulateDownload(result, 'unlock');
       toast({
         title: "Downloaded",
         description: "Your unlocked PDF has been downloaded.",

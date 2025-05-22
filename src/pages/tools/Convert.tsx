@@ -1,9 +1,9 @@
-
 import React, { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { simulateDownload } from "@/utils/downloadUtils";
+import { validatePdfFile } from "@/utils/pdfUtils";
 
 const Convert = () => {
   const [result, setResult] = useState<string | null>(null);
@@ -14,27 +14,19 @@ const Convert = () => {
     if (!files || files.length === 0) {
       toast({
         title: "Error",
-        description: "Please select a file to convert.",
+        description: "Please select a PDF file to convert.",
         variant: "destructive",
       });
       return;
     }
 
-    // Ensure the file is a PDF
-    const file = files[0];
-    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-      toast({
-        title: "Error",
-        description: `${file.name} is not a supported file type. Please upload a PDF file.`,
-        variant: "destructive",
-      });
-      return;
-    }
+    // Validate PDF file
+    if (!validatePdfFile(files[0], toast)) return;
 
     // Simulate conversion
     toast({
       title: "Processing",
-      description: `Converting your file to ${getFormatName(convertTo)}...`,
+      description: `Converting your PDF to ${getFormatName(convertTo)}...`,
     });
 
     await new Promise(resolve => setTimeout(resolve, 1500));
@@ -44,7 +36,7 @@ const Convert = () => {
     
     toast({
       title: "Success!",
-      description: `Your file has been converted to ${getFormatName(convertTo)}. You can now download the result.`,
+      description: `Your PDF has been converted to ${getFormatName(convertTo)}. You can now download the result.`,
     });
   };
 
@@ -62,7 +54,7 @@ const Convert = () => {
 
   const handleDownload = () => {
     if (result) {
-      simulateDownload(result);
+      simulateDownload(result, 'convert');
       toast({
         title: "Downloaded",
         description: `Your converted file has been downloaded.`,

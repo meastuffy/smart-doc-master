@@ -30,7 +30,7 @@ const Rotate = () => {
 
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    setResult("rotated-file.pdf");
+    setResult("rotated-" + files[0].name);
     
     toast({
       title: "Success!",
@@ -40,7 +40,7 @@ const Rotate = () => {
 
   const handleDownload = () => {
     if (result) {
-      simulateDownload(result);
+      simulateDownload(result, 'rotate');
       toast({
         title: "Downloaded",
         description: "Your rotated PDF has been downloaded.",

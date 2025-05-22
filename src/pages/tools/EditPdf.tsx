@@ -1,13 +1,14 @@
-
 import React, { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
 import { Edit, ImagePlus, Type, Shapes } from "lucide-react";
 import { simulateDownload } from "@/utils/downloadUtils";
+import { validatePdfFile } from "@/utils/pdfUtils";
 
 const EditPdf = () => {
   const [result, setResult] = useState<string | null>(null);
   const [editorVisible, setEditorVisible] = useState(false);
+  const [originalFilename, setOriginalFilename] = useState<string>("");
   const { toast } = useToast();
 
   const handleEdit = async (files: File[]) => {
@@ -20,21 +21,14 @@ const EditPdf = () => {
       return;
     }
 
-    // Ensure the file is a PDF
-    const file = files[0];
-    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-      toast({
-        title: "Error",
-        description: `${file.name} is not a supported file type. Please upload a PDF file.`,
-        variant: "destructive",
-      });
-      return;
-    }
+    // Validate PDF file
+    if (!validatePdfFile(files[0], toast)) return;
 
     // Simulate loading
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     setEditorVisible(true);
+    setOriginalFilename(files[0].name);
     
     toast({
       title: "Success!",
@@ -43,7 +37,7 @@ const EditPdf = () => {
   };
 
   const handleSave = () => {
-    setResult("edited-file.pdf");
+    setResult("edited-" + originalFilename);
     toast({
       title: "PDF Saved",
       description: "Your edited PDF is ready to download.",
@@ -52,7 +46,7 @@ const EditPdf = () => {
 
   const handleDownload = () => {
     if (result) {
-      simulateDownload(result);
+      simulateDownload(result, 'edit');
       toast({
         title: "Downloaded",
         description: "Your edited PDF has been downloaded.",
