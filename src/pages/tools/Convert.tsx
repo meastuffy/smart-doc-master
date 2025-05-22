@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import ToolLayout from "@/components/layout/ToolLayout";
 import { useToast } from "@/hooks/use-toast";
@@ -20,8 +21,17 @@ const Convert = () => {
       return;
     }
 
-    // Validate PDF file
-    if (!validatePdfFile(files[0], toast)) return;
+    const file = files[0];
+    
+    // Validate PDF file - use more permissive validation for file types
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+      toast({
+        title: "Error",
+        description: `${file.name} is not a supported file type. Please upload a PDF file.`,
+        variant: "destructive",
+      });
+      return;
+    }
 
     // Simulate conversion
     toast({
@@ -31,7 +41,7 @@ const Convert = () => {
 
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    const fileName = files[0].name.split('.')[0];
+    const fileName = file.name.split('.')[0];
     setResult(`${fileName}.${convertTo}`);
     
     toast({
@@ -65,7 +75,7 @@ const Convert = () => {
   return (
     <ToolLayout
       title="Convert Files"
-      description="Convert between various document formats"
+      description="Convert PDF to various document formats"
       acceptedFileTypes={["application/pdf", ".pdf"]}
       maxFiles={1}
       buttonText="Convert File"

@@ -62,21 +62,36 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     let validFiles: File[] = [];
     let hasErrors = false;
 
+    // Parse the accepted types string into an array for easier checking
+    const acceptTypes = accept.split(',').map(type => type.trim().toLowerCase());
+
     // Validate file types and sizes
     for (const file of fileArray) {
-      // Check if file extension is in accepted format list or matches by MIME type
+      // File extension with dot
       const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`;
-      const acceptedTypes = accept.split(',').map(type => type.trim().toLowerCase());
       
-      const isValidType = acceptedTypes.includes(fileExtension) || 
-                         acceptedTypes.includes(file.type) ||
-                         (accept.includes('.pdf') && file.name.toLowerCase().endsWith('.pdf')) ||
-                         (accept.includes('application/pdf') && file.type === 'application/pdf');
-                         
+      // Check MIME type match or extension match
+      const isValidType = acceptTypes.some(acceptType => {
+        // Check direct MIME type match
+        if (acceptType === file.type) return true;
+        
+        // Check file extension match
+        if (acceptType === fileExtension) return true;
+        
+        // Special case for PDF files: handle both MIME type and extension
+        if ((acceptType === '.pdf' || acceptType === 'application/pdf') && 
+            (file.type === 'application/pdf' || fileExtension === '.pdf')) {
+          return true;
+        }
+        
+        return false;
+      });
+      
       const isValidSize = file.size <= maxSize * 1024 * 1024; // Convert MB to bytes
       
       if (!isValidType) {
         toast.error(`${file.name} is not a supported file type`);
+        console.log(`Invalid file type: ${file.type}, extension: ${fileExtension}, accepted types: ${accept}`);
         hasErrors = true;
       } else if (!isValidSize) {
         toast.error(`${file.name} exceeds the maximum file size of ${maxSize}MB`);
